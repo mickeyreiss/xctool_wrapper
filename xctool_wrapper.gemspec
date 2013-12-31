@@ -3,7 +3,7 @@ require File.expand_path("../lib/xctool/version", __FILE__)
 
 Gem::Specification.new do |s|
   s.name = "xctool_wrapper"
-  s.platform = "darwin"
+  s.platform = "universal-darwin"
   s.version = XCTool::VERSION
   s.summary = "A ruby wrapper around facebook/XCTool that allows you to script xctool using the builder pattern in ruby."
   s.author = "Mickey Reiss"
