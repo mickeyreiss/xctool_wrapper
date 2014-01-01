@@ -1,40 +1,40 @@
 module XCTool
   class Builder
-    extend Configuration
+    include Configuration
 
-    def initialize
-      @cmd = []
-      @test_sdks = []
+    def initialize(workspace, scheme)
+      @xctool = XCTool.new
+      @workspace = workspace
+      @scheme = scheme
+
+      with_defaults
     end
 
-    def self.build(workspace, scheme)
-      self.new.instance_eval do |xctool|
-        @reporter = DEFAULT_REPORTER
-        @scheme = scheme
-        @sdk = SDKS.first
-        @test_sdks = [SDKS.first]
-        @workspace = 'VenmoSDK.xcworkspace'
-        self
-      end
+    def with_defaults
+      @test_sdks = [SDKS.first]
+      @xctool.reporter = DEFAULT_REPORTER
+      @xctool.scheme = @scheme
+      @xctool.sdk = SDKS.first
+      @xctool.workspace = @workspace
     end
 
     def with_reporter reporter
-      @reporter = reporter.to_s
+      @xctool.reporter = reporter.to_s
       self
     end
 
     def with_target(target)
-      @only = target
+      @xctool.only = target
       self
     end
 
     def with_scheme(scheme)
-      @scheme = scheme
+      @xctool.scheme = scheme
       self
     end
 
     def with_sdk(sdk)
-      @sdk = sdk
+      @xctool.sdk = sdk
       self
     end
 
@@ -49,60 +49,41 @@ module XCTool
     end
 
     def build
-      @cmd << "build"
-      return self
+      @xctool.append_subcommand "build"
+      self
     end
 
     def clean
-      @cmd << "clean"
+      @xctool.append_subcommand "clean"
       self
     end
 
     def build_tests
-      @cmd << "build-tests"
+      @xctool.append_subcommand "build-tests"
       self
     end
 
     def run_tests
-      (@test_sdks | [@sdk]).each do |test_sdk|
-        @cmd << <<-CMD
-          run-tests
-          -test-sdk '#{test_sdk}'
-          -failOnEmptyTestBundles
-          -freshSimulator
-          -parallelize
-        CMD
-        @cmd << "-only '#{@only}'" if @only
+      @test_sdks.each do |test_sdk|
+        @xctool.run_tests(test_sdk)
       end
       self
     end
 
     def analyze
-      @cmd << <<-CMD
+      @xctool.append_subcommand <<-CMD
         analyze
         -failOnWarnings
       CMD
       self
    end
 
-    def to_cmd
-      "#{XCTOOL} #{_xctool_params} #{@cmd.join(' ')}".gsub(/\s+/, ' ').strip
+    def as_cmd
+      @xctool.as_cmd
     end
 
     def to_s
-      "`#{to_cmd}`"
-    end
-
-    def _xctool_params
-      cmd = ""
-      cmd << "-reporter '#{@reporter}' \ \n" if @reporter
-      cmd << <<-CMD
-        -workspace '#{@workspace}' \
-        -scheme '#{@scheme}' \
-        -sdk '#{@sdk}' \
-        -configuration Release
-      CMD
-      cmd
+      @xctool.to_s
     end
   end
 end
