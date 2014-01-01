@@ -1,1 +1,1 @@
-require 'xctool_wrapper'
+require 'xctool'
