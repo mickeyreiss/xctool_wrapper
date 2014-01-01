@@ -26,6 +26,7 @@ module XCTool
         -failOnEmptyTestBundles
         -freshSimulator
         -parallelize
+        -simulator iphone
       CMD
       @cmd << "-only '#{only}'" if only
     end
