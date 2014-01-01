@@ -46,20 +46,20 @@ describe XCTool::Builder do
 
   describe "#with_target" do
     it "should exclude the target if not specified explicitly" do
-      subject.as_cmd.should_not include("-only")
+      subject.run_tests.as_cmd.should_not include("-only")
     end
 
-    it "should change the target when running tets" do
+    it "should change the target when running tests" do
       subject.with_target("test_target").run_tests.as_cmd.should include("-only 'test_target'")
     end
   end
 
-  describe "#with_scheme" 
+  describe "#with_sdk" do
+    it "should set the sdk flag" do
+      subject.with_sdk("build_sdk").as_cmd.should include("-sdk 'build_sdk'")
+    end
+  end
 
-  describe "#with_sdk" 
-
-  describe "#with_all_test_sdks"
-  describe "#with_test_sdk"
   describe "#build" do
     it "should append a build subcommand" do
       subject.build.as_cmd.should end_with("build")
@@ -91,12 +91,30 @@ describe XCTool::Builder do
   end
 
   describe "#run_tests" do
-    it "should append a run-tests subcommand with the build sdk" do
-      subject.run_tests.as_cmd.should include("run-tests -test-sdk '#{XCTool::Configuration::SDKS.first}'")
+    it "should append a run-tests subcommand (by default, test sdk = build sdk)" do
+      subject.with_sdk("build_sdk").run_tests.as_cmd.should include("run-tests -test-sdk 'build_sdk'")
     end
 
-    it "should append multiple run-tests subcommands with varying test-sdks" do
-      subject.run_tests.with_test_sdk("test_test_sdk").run_tests.as_cmd.should match(/run-tests -test-sdk '#{XCTool::Configuration::SDKS.first}'.*run-tests -test-sdk 'test_test_sdk'/)
+    describe "#with_test_sdk" do
+      it "should use the specified test sdk" do
+        subject.with_test_sdk("sdk").run_tests.as_cmd.should include("run-tests -test-sdk 'sdk'")
+      end
+
+      it "should exclude the default test sdk when a test sdk is specified" do
+        subject.with_test_sdk("sdk").run_tests.as_cmd.should_not include("run-tests -test-sdk '#{XCTool::Configuration::SDKS.first}'")
+      end
+
+      it "should append multiple run-tests subcommands with varying test-sdks" do
+        subject.with_test_sdk("test_sdk1").with_test_sdk("test_sdk2").run_tests.as_cmd.should match(/run-tests -test-sdk 'test_sdk1'.*run-tests -test-sdk 'test_sdk2'/)
+      end
+    end
+
+    describe "#with_all_test_sdks" do
+      it "should use all available sdks when called with all test sdks" do
+        XCTool::Configuration::SDKS.each do |sdk|
+          subject.with_all_test_sdks.run_tests.as_cmd.should include("-test-sdk '#{sdk}'")
+        end
+      end
     end
   end
 

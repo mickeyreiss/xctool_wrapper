@@ -11,7 +11,7 @@ module XCTool
     end
 
     def with_defaults
-      @test_sdks = [SDKS.first]
+      @test_sdks = []
       @xctool.reporter = DEFAULT_REPORTER
       @xctool.scheme = @scheme
       @xctool.sdk = SDKS.first
@@ -25,11 +25,6 @@ module XCTool
 
     def with_target(target)
       @xctool.only = target
-      self
-    end
-
-    def with_scheme(scheme)
-      @xctool.scheme = scheme
       self
     end
 
@@ -64,7 +59,7 @@ module XCTool
     end
 
     def run_tests
-      @test_sdks.each do |test_sdk|
+      (@test_sdks.empty? ? [@xctool.sdk] : @test_sdks).each do |test_sdk|
         @xctool.run_tests(test_sdk)
       end
       self
