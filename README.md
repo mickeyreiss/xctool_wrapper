@@ -11,6 +11,7 @@ To help you leverage these features in `Rakefile`s, the `xctool_wrapper` gem add
 require 'xctool'
 xctool = XCTool::Builder.new("my-workspace", "my-scheme") # instantiate an xctool builder
 xctool.with_test_sdk("iphonesimulator7.0").clean.test # configure xctool
+puts xctool # outputs: `xctool -reporter 'pretty' -workspace 'my-workspace' -scheme 'my-scheme' -sdk 'iphonesimulator7.0' -configuration 'Release' clean test -test-sdk 'iphonesimulator7.0' -freshSimulator -parallelize -failOnEmptyTestBundles -simulator iphone`
 sh xctool.as_cmd # you are responsible for shelling out to invoke xctool, located on PATH.
 ```
 
