@@ -15,12 +15,13 @@ module XCTool
       "`#{as_cmd}`"
     end
 
-    def append_subcommand cmd
-      @cmd << cmd
+    def append_build_tests
+      append_subcommand "build-tests"
+      append_subcommand "-only '#{only}'" if only
     end
 
-    def run_tests(test_sdk)
-      @cmd << <<-CMD
+    def append_run_tests(test_sdk)
+      append_subcommand <<-CMD
         run-tests
         -test-sdk '#{test_sdk}'
         -failOnEmptyTestBundles
@@ -31,6 +32,41 @@ module XCTool
       @cmd << "-only '#{only}'" if only
     end
 
+    def append_test(test_sdk)
+      append_subcommand <<-CMD
+        test
+        -test-sdk '#{test_sdk}'
+        -freshSimulator
+        -parallelize
+        -failOnEmptyTestBundles
+        -simulator iphone
+      CMD
+      @cmd << "-only '#{only}'" if only
+    end
+
+    def append_analyze
+      append_subcommand <<-CMD
+        analyze
+        -failOnWarnings
+      CMD
+    end
+
+    def append_clean
+      append_subcommand "clean"
+    end
+
+    def append_build
+      append_subcommand "build"
+    end
+
+    def append_archive
+      append_subcommand "archive"
+    end
+
+    private
+    def append_subcommand cmd
+      @cmd << cmd
+    end
 
     def _xctool_params
       cmd = ""

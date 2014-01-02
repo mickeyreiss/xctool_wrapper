@@ -44,32 +44,41 @@ module XCTool
     end
 
     def build
-      @xctool.append_subcommand "build"
+      @xctool.append_build
+      self
+    end
+
+    def archive
+      @xctool.append_archive
+      self
+    end
+
+    def test
+      (@test_sdks.empty? ? [@xctool.sdk] : @test_sdks).each do |test_sdk|
+        @xctool.append_test(test_sdk)
+      end
       self
     end
 
     def clean
-      @xctool.append_subcommand "clean"
+      @xctool.append_clean
       self
     end
 
     def build_tests
-      @xctool.append_subcommand "build-tests"
+      @xctool.append_build_tests
       self
     end
 
     def run_tests
       (@test_sdks.empty? ? [@xctool.sdk] : @test_sdks).each do |test_sdk|
-        @xctool.run_tests(test_sdk)
+        @xctool.append_run_tests(test_sdk)
       end
       self
     end
 
     def analyze
-      @xctool.append_subcommand <<-CMD
-        analyze
-        -failOnWarnings
-      CMD
+      @xctool.append_analyze
       self
    end
 

@@ -70,6 +70,24 @@ describe XCTool::Builder do
     end
   end
 
+  describe "#test" do
+    it "should append a test subcommand" do
+      subject.with_sdk("build_sdk").test.as_cmd.should include("test -test-sdk 'build_sdk'")
+    end
+
+    it "should append multiple test subcommands" do
+      subject.test.test.test.as_cmd.should match(/test.*test.*test/)
+    end
+
+    it "should run a test for each test sdk" do
+      subject.with_sdk("build_sdk").with_test_sdk("sdk1").with_test_sdk("sdk2").test
+
+      subject.as_cmd.should include("test -test-sdk 'sdk1'")
+      subject.as_cmd.should include("test -test-sdk 'sdk2'")
+      subject.as_cmd.should_not include("test -test-sdk 'build_sdk'")
+    end
+  end
+
   describe "#clean" do
     it "should append a clean subcommand" do
       subject.clean.as_cmd.should end_with("clean")
@@ -123,8 +141,24 @@ describe XCTool::Builder do
       subject.analyze.as_cmd.should include("analyze")
     end
 
-    it "should append multiple analyze analyze subcommands" do
+    it "should append multiple analyze subcommands" do
       subject.analyze.analyze.as_cmd.should match(/analyze.*analyze/)
+    end
+  end
+
+  describe "to_s" do
+    it "should return #as_cmd surrounded by backticks" do
+      subject.to_s.should eq("`#{subject.as_cmd}`")
+    end
+  end
+
+  describe "#archive" do
+    it "should append an archive subcommand" do
+      subject.archive.as_cmd.should include("archive")
+    end
+
+    it "should append multiple archive subcommands" do
+      subject.archive.archive.as_cmd.should match(/archive.*archive/)
     end
   end
 
