@@ -1,5 +1,5 @@
 # coding: utf-8
-require File.expand_path("../lib/xctool/version", __FILE__)
+require "./lib/xctool/version"
 
 Gem::Specification.new do |s|
   s.name = "xctool_wrapper"
