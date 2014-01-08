@@ -43,6 +43,11 @@ module XCTool
       self
     end
 
+    def build_in(build_dir)
+      @xctool.build_dir = build_dir
+      self
+    end
+
     def build
       @xctool.append_build
       self

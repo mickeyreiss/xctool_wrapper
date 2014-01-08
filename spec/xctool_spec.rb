@@ -136,6 +136,12 @@ describe XCTool::Builder do
     end
   end
 
+  describe "#build_in" do
+    it "specifies a build directory" do
+      subject.build_in("some_build_directory").as_cmd.should include("BUILD_DIR='some_build_directory'")
+    end
+  end
+
   describe "#analyze" do
     it "should append an analyze subcommand" do
       subject.analyze.as_cmd.should include("analyze")
