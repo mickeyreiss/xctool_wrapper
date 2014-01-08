@@ -1,10 +1,11 @@
 module XCTool
   class XCTool
     include Configuration
-    attr_accessor :reporter, :scheme, :sdk, :workspace, :only, :build_dir
+    attr_accessor :reporter, :scheme, :sdk, :workspace, :only, :build_settings
 
     def initialize
-        @cmd = []
+      @build_settings = []
+      @cmd = []
     end
 
     def as_cmd
@@ -77,7 +78,11 @@ module XCTool
         -sdk '#{@sdk}' \
         -configuration 'Release'
       CMD
-      cmd << "BUILD_DIR='#{@build_dir}'" if @build_dir
+
+      @build_settings.each do |setting_name, setting_value|
+        cmd << "#{setting_name}='#{setting_value}' "
+      end
+
       cmd
     end
   end

@@ -43,8 +43,13 @@ module XCTool
       self
     end
 
+    def with_build_setting(setting_name, setting_value)
+      @xctool.build_settings << [setting_name, setting_value]
+      self
+    end
+
     def build_in(build_dir)
-      @xctool.build_dir = build_dir
+      @xctool.build_settings << ["BUILD_DIR", build_dir]
       self
     end
 

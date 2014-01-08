@@ -142,6 +142,12 @@ describe XCTool::Builder do
     end
   end
 
+  describe "#with_build_setting" do
+    it "specifies a build setting" do
+      subject.with_build_setting("MY_BUILD_SETTING", "my_value").as_cmd.should include("MY_BUILD_SETTING='my_value'")
+    end
+  end
+
   describe "#analyze" do
     it "should append an analyze subcommand" do
       subject.analyze.as_cmd.should include("analyze")
