@@ -16,3 +16,6 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# This is a gem. Don't commit the Gemfile.
+Gemfile.lock
