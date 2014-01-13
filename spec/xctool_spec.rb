@@ -32,6 +32,10 @@ describe XCTool::Builder do
     it "should include a default reporter" do
       subject.should include("-reporter '#{XCTool::Configuration::DEFAULT_REPORTER}'")
     end
+
+    it "should not include an architecture by default" do
+      subject.should_not include("-arch")
+    end
   end
 
   describe "#with_reporter" do
@@ -57,6 +61,12 @@ describe XCTool::Builder do
   describe "#with_sdk" do
     it "should set the sdk flag" do
       subject.with_sdk("build_sdk").as_cmd.should include("-sdk 'build_sdk'")
+    end
+  end
+
+  describe "#with_arch" do
+    it "should set the arch flag" do
+      subject.with_arch("x86_64").as_cmd.should match(/-arch 'x86_64'(\s|$)/)
     end
   end
 

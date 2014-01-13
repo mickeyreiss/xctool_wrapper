@@ -43,6 +43,11 @@ module XCTool
       self
     end
 
+    def with_arch(arch)
+      @xctool.arch = arch
+      self
+    end
+
     def with_build_setting(setting_name, setting_value)
       @xctool.build_settings << [setting_name, setting_value]
       self

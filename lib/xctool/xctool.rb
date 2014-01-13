@@ -1,7 +1,7 @@
 module XCTool
   class XCTool
     include Configuration
-    attr_accessor :reporter, :scheme, :sdk, :workspace, :only, :build_settings
+    attr_accessor :reporter, :scheme, :sdk, :workspace, :only, :build_settings, :arch
 
     def initialize
       @build_settings = []
@@ -71,13 +71,14 @@ module XCTool
 
     def _xctool_params
       cmd = ""
-      cmd << "-reporter '#{@reporter}' \ \n" if @reporter
+      cmd << "-reporter '#{reporter}' \ \n" if reporter
       cmd << <<-CMD
         -workspace '#{@workspace}' \
         -scheme '#{@scheme}' \
         -sdk '#{@sdk}' \
         -configuration 'Release'
       CMD
+      cmd << "-arch '#{arch}' " if arch
 
       @build_settings.each do |setting_name, setting_value|
         cmd << "#{setting_name}='#{setting_value}' "
