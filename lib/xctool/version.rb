@@ -1,4 +1,4 @@
 module XCTool
-  VERSION = "0.0.3"
+  VERSION = "0.0.4"
   XCTOOL_VERSION = "0.1.14"
 end
