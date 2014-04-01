@@ -19,6 +19,7 @@ sh xctool.as_cmd # you are responsible for shelling out to invoke xctool, locate
 
 * [Venmo Touch](https://github.braintreeps.com/venmo/venmo-touch-ios-private/blob/9397b0611da70f4d3d00890ae2f8fe188e241238/Rakefile#L75)
 * [ios-configuration-management-client](https://github.braintreeps.com/venmo/iOS-Configuration-Management-Client/blob/897d5139227f5c9362431896a04795b3a1c353db/Rakefile#L139)
+* [Braintree-API-iOS](https://github.braintreeps.com/braintree/braintree-api-ios)
 
 ## Contributing
 
