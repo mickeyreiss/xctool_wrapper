@@ -11,6 +11,6 @@ Gem::Specification.new do |s|
   s.post_install_message = "The xctool_wrapper gem assumes that xctool #{XCTool::XCTOOL_VERSION} is installed. Please ensure it is available via `brew install xctool --version #{XCTool::XCTOOL_VERSION}`." unless %x{xctool=$(which xctool) && $xctool --version}.strip == "0.1.14"
   s.files = Dir["**/*.rb", "*.md"]
   s.require_path = "lib"
-  s.homepage = "https://github.braintreeps.com/mickeyreiss/xctool_wrapper"
+  s.homepage = "https://github.com/mickeyreiss/xctool_wrapper"
   s.license = "MIT"
 end
