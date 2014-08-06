@@ -4,7 +4,8 @@ module XCTool
 
     DEFAULT_REPORTER = 'pretty'
 
-    SDKS = %w{iphonesimulator7.1
+    SDKS = %w{iphonesimulator8.0
+              iphonesimulator7.1
               iphonesimulator7.0
               iphonesimulator6.1
               iphonesimulator6.0
