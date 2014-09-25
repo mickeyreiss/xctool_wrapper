@@ -96,6 +96,10 @@ describe XCTool::Builder do
       subject.as_cmd.should include("test -test-sdk 'sdk2'")
       subject.as_cmd.should_not include("test -test-sdk 'build_sdk'")
     end
+
+    it "should not include -simulator" do
+      subject.test.test.test.as_cmd.should_not match(/-simulator/)
+    end
   end
 
   describe "#clean" do
@@ -134,6 +138,10 @@ describe XCTool::Builder do
 
       it "should append multiple run-tests subcommands with varying test-sdks" do
         subject.with_test_sdk("test_sdk1").with_test_sdk("test_sdk2").run_tests.as_cmd.should match(/run-tests -test-sdk 'test_sdk1'.*run-tests -test-sdk 'test_sdk2'/)
+      end
+
+      it "should not include -simulator" do
+        subject.with_test_sdk("sdk").run_tests.as_cmd.should_not match(/-simulator/)
       end
     end
 
